@@ -65,7 +65,8 @@ module DeviseTokenAuth::Concerns::SetUserByToken
       if self.respond_to? :bypass_sign_in
         bypass_sign_in(user, scope: :user)
       else
-        sign_in(:user, user, store: false, bypass: true)
+        # for guest user, we are not signing in
+        sign_in(:user, user, store: false, bypass: true) unless user.guest
       end
       return @resource = user
     else
